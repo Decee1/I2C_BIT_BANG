@@ -12,6 +12,9 @@ class i2c_bb
         bool transmission_write(uint8_t *data, uint8_t len);
         bool transmission_read(uint8_t *data, uint8_t len);
         void transmission_end();
+		void set_scl_clock_strech(int value);
+		void set_generic_delay(int value);
+		
     protected:
     private:
         uint8_t _sda;

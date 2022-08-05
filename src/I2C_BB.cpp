@@ -2,10 +2,10 @@
 #include "I2C_BB.h"
 
 // Increased the duration of the SCL high (clock)
-#define SCL_CLOCK_STRECH 10
+int SCL_CLOCK_STRECH = 10;
 
 // Generic timer, slows everything down (ueful on the ESP32 - replace with vTaskDelay)
-#define DELAY_GENERIC 0
+int DELAY_GENERIC = 0;
 
 // Note I2C SDA is open drain, this means we need to use INPUT for an SDA high logic. I.e. we can't just write digitalWrite(pin, HIGH) for the SDA.
 #define SDA_HIGH pinMode(_sda, INPUT); delayMicroseconds(DELAY_GENERIC);
@@ -160,4 +160,23 @@ void i2c_bb::start()              // Start sequence - start trading bits
 {
   SDA_LOW;                         // As described by the protocol
   SCL_LOW;
+}
+
+
+void i2c_bb::set_scl_clock_strech(int value) {
+	/*
+	* Sets the clock strech variable to the value parameter
+	* clock strech is a delay after the SCL goes high which ensures that it is high 
+	* before for example SCL goes LOW or you execute DigitalRead
+	* paramters: value - The delay in Microseconds 
+	*/
+	SCL_CLOCK_STRECH = value;
+}
+
+void i2c_bb::set_generic_delay(int value) {
+	/*
+	* Sets a generic delay that is executed for each SDA or SCL HIGH/LOW's or pinMode change 
+	* paramters: value - The delay in Microseconds 
+	*/
+	DELAY_GENERIC = value;
 }
